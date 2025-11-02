@@ -67,3 +67,28 @@ Itens opcionais implementados
 Apresentação: O trabalho será apresentado em sala e todos devem participar.
 
 Penalidades: Haverá perda de nota em casos de plágio, ausência de itens obrigatórios, código desorganizado, CSS/JS inline ou falta de originalidade.
+
+👥 Organização das Funções no Grupo
+
+Todos os integrantes devem participar ativamente do JavaScript, além de suas funções principais em HTML e CSS.
+
+🔹 Caso o grupo tenha 3 integrantes:
+Integrante	Responsabilidades principais	Participação no JavaScript
+Integrante 1 – Estrutura e Funcionalidades	Criar o HTML principal (estrutura do site, cabeçalho, seções, formulários, botões e modal).	Funções JS para adicionar, remover e atualizar jogos (manipulação do DOM).
+Integrante 2 – Estilo e Layout	Desenvolver o CSS completo, aplicando design moderno, cores, fontes e responsividade (Flexbox e Grid).	Funções JS para mudança de categorias e aplicação de estilos dinâmicos.
+Integrante 3 – Lógica e Armazenamento	Organizar o JavaScript geral e integrar as funções do grupo.	Implementar o WebStorage (localStorage) e o filtro por categorias.
+🔹 Caso o grupo tenha 4 integrantes:
+Integrante	Responsabilidades principais	Participação no JavaScript
+Integrante 1 – Estrutura HTML	Criar as páginas e seções do site (lista de jogos, formulário e modal).	JS para gerar o conteúdo dinâmico no DOM (exibir jogos e categorias).
+Integrante 2 – Estilo e Responsividade	Desenvolver o CSS com layout responsivo e transições visuais.	JS para interações visuais, como abrir/fechar modal e trocar temas.
+Integrante 3 – Armazenamento e Lógica	Implementar o WebStorage para salvar e carregar dados.	JS para armazenar e recuperar jogos e categorias do localStorage.
+Integrante 4 – Filtros e Funcionalidades Extras	Criar filtros de categoria, busca e recursos adicionais.	JS para filtrar, buscar e organizar os jogos dinamicamente.
+💡 Boas práticas:
+
+Todos devem fazer commits com mensagens claras (ex: add função de salvar no localStorage).
+
+Usem branches separadas (html-base, css-layout, js-filtros etc.) para evitar conflitos.
+
+No final, revisem juntos o layout e testem todas as funções.
+
+A janela modal deve conter o nome dos autores e um breve resumo do projeto.
