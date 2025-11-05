@@ -1,22 +1,70 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>TierList - Entretenimento</title>
     <link rel="stylesheet" href="segundapg.css">
 </head>
-<body>  
+<body>
     <header>
-  <h1>Catálogo</h1>
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="sobre.html">Sobre</a>
-    <a href="contato.html">Contato</a>
-    <a href="tierlist.html">Tier List</a>
-  </nav>
-</header>
+        <div class="header-content">
+            <div class="logo-section">
+                <div class="logo"></div>
+                <div class="brand-name">TierList</div>
+            </div>
+            <button class="add-button" onclick="openModal()">
+                <span>Adicionar</span>
 
-<button>Crie +</button>
+            </button>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="welcome-section">
+            <h1>Seu Mercado de Entretenimento</h1>
+            <p>Organize seus filmes, séries e conteúdos favoritos em um só lugar</p>
+        </div>
+
+        <div class="empty-state" id="emptyState">
+            <div class="empty-state-icon">📭</div>
+            <h2>Nenhum entretenimento adicionado</h2>
+            <p>Clique no botão "Adicionar" para começar sua coleção</p>
+        </div>
+
+        <div class="content-grid hidden" id="contentGrid">
+        </div>
+    </div>
+
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <div class="modal-header">Adicionar Novo Item</div>
+            <form id="addForm">
+                <div class="form-group">
+                    <label>Categoria</label>
+                    <select id="category">
+                        <option value="filme">🎬 Filme</option>
+                        <option value="serie">📺 Série</option>
+                        <option value="game">🎮 Game</option>
+                        <option value="musica">🎵 Música</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Título</label>
+                    <input type="text" id="title" placeholder="Nome do conteúdo" required>
+                </div>
+                <div class="form-group">
+                    <label>Descrição</label>
+                    <textarea id="description" placeholder="Adicione uma descrição..."></textarea>
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Adicionar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <link href="segundapg.js">
 </body>
 </html>
