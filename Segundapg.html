@@ -13,10 +13,14 @@
                 <div class="logo"></div>
                 <div class="brand-name">TierList</div>
             </div>
-            <button class="add-button" onclick="openModal()">
-                <span>Adicionar</span>
-
-            </button>
+            
+            <div class="header-buttons">
+                <button class="about-btn" onclick="openAboutModal()">?</button>
+                
+                <button class="add-button" onclick="openModal()">
+                    <span>Adicionar</span>
+                </button>
+            </div>
         </div>
     </header>
 
@@ -26,6 +30,17 @@
             <p>Organize seus filmes, séries e conteúdos favoritos em um só lugar</p>
         </div>
 
+        <div class="filter-container">
+            <label for="filterCategory">Filtrar por Categoria:</label>
+            <select id="filterCategory">
+                <option value="all">Todos</option>
+                <option value="filme">🎬 Filme</option>
+                <option value="serie">📺 Série</option>
+                <option value="game">🎮 Game</option>
+                <option value="musica">🎵 Música</option>
+            </select>
+        </div>
+
         <div class="empty-state" id="emptyState">
             <div class="empty-state-icon">📭</div>
             <h2>Nenhum entretenimento adicionado</h2>
@@ -33,7 +48,7 @@
         </div>
 
         <div class="content-grid hidden" id="contentGrid">
-        </div>
+            </div>
     </div>
 
     <div class="modal" id="modal">
@@ -65,6 +80,25 @@
         </div>
     </div>
 
-    <link href="segundapg.js">
+    <div class="modal" id="aboutModal">
+        <div class="modal-content">
+            <div class="modal-header">Sobre o Projeto</div>
+            <p style="text-align: center; line-height: 1.6; margin-bottom: 25px;">
+                Este projeto foi desenvolvido para a disciplina de Trabalho Prático 2 (TP2).
+            </p>
+            <h3 style="text-align: center; margin-bottom: 15px;">Autores:</h3>
+            <ul style="text-align: center; list-style: none; padding: 0;">
+                <li style="margin-bottom: 10px;">Thainara Cristina</li>
+                <li style="margin-bottom: 10px;">Victor Hugo</li>
+                <li style="margin-bottom: 10px;">Vitor</li>
+                <li style="margin-bottom: 10px;">Pedro Stur</li>
+            </ul>
+            <div class="modal-buttons" style="margin-top: 30px;">
+                <button type="button" class="btn btn-primary" onclick="closeAboutModal()">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="Segundapg.js"></script>
 </body>
 </html>
