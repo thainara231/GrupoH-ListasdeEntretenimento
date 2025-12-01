@@ -35,7 +35,7 @@
         <div class="row">
             <div class="col-md-4">
                 
-                <div class="custom-card text-center">
+                <div class="custom-card text-center mb-3">
                     <h5 class="mb-3">Estatísticas</h5>
                     <div style="height: 200px;">
                         <canvas id="meuGrafico"></canvas>
@@ -78,6 +78,14 @@
                     </button>
                 </div>
 
+                <div class="d-flex justify-content-center gap-2 mb-4 flex-wrap">
+                    <button onclick="filtrar('todos')" class="btn btn-sm btn-outline-light active" id="btn-todos">Todos</button>
+                    <button onclick="filtrar('filme')" class="btn btn-sm btn-outline-warning" id="btn-filme">Filmes</button>
+                    <button onclick="filtrar('jogo')" class="btn btn-sm btn-outline-danger" id="btn-jogo">Jogos</button>
+                    <button onclick="filtrar('livro')" class="btn btn-sm btn-outline-success" id="btn-livro">Livros</button>
+                    <button onclick="filtrar('serie')" class="btn btn-sm btn-outline-info" id="btn-serie">Séries</button>
+                </div>
+
                 <div id="listaItens">
                     <div class="text-center text-muted mt-5">
                         <i class="fas fa-ghost fa-3x"></i>
@@ -96,14 +104,12 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <p>Este sistema foi desenvolvido para a disciplina de Desenvolvimento Web.</p>
+                    <p>Este sistema foi desenvolvido para a disciplina de Desenvolvimento Web (TP2).</p>
                     <hr class="bg-secondary">
                     <h6>Desenvolvedores:</h6>
                     <ul>
                         <li>Pedro Sturzenecker Santana</li>
-                        <li>Thainara Cristina da Neiva Lopes</li>
-                        <li>...(Preencha seu sobrenome aqui)</li> 
-                    </ul>
+                        <li>Tainara [SEU SOBRENOME AQUI]</li> </ul>
                 </div>
                 <div class="modal-footer border-secondary">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
