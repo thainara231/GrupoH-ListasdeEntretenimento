@@ -113,3 +113,96 @@
             }
         }
 
+        window.deletarItem = function(id) {
+            Swal.fire({
+                title: 'Tem certeza?',
+                text: "Não será possível recuperar este item!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sim, deletar!',
+                background: '#1e1e1e',
+                color: '#fff'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Filtra a lista removendo o ID clicado
+                    listaDeMidias = listaDeMidias.filter(item => item.id !== id);
+                    salvarDados();
+                    atualizarTela();
+                    Swal.fire({
+                        title: 'Deletado!',
+                        icon: 'success',
+                        background: '#1e1e1e',
+                        color: '#fff',
+                        timer: 1000,
+                        showConfirmButton: false
+                    });
+                }
+            });
+        }
+
+        window.limparTudo = function() {
+            if(listaDeMidias.length === 0) return;
+            
+            Swal.fire({
+                title: 'Apagar tudo?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'Sim, apagar tudo',
+                background: '#1e1e1e',
+                color: '#fff'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    listaDeMidias = [];
+                    salvarDados();
+                    atualizarTela();
+                }
+            });
+        }
+
+     
+        function inicializarGrafico() {
+            const ctx = document.getElementById('meuGrafico');
+            if(!ctx) return;
+
+            graficoInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Filmes', 'Jogos', 'Livros', 'Séries'],
+                    datasets: [{
+                        data: [0, 0, 0, 0],
+                        backgroundColor: ['#ffa726', '#ef5350', '#66bb6a', '#42a5f5'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { color: '#e0e0e0' }
+                        }
+                    }
+                }
+            });
+        }
+
+        function atualizarGrafico() {
+            if (!graficoInstance) return;
+
+            // Contar quantos itens de cada categoria existem
+            let qtdFilmes = listaDeMidias.filter(m => m.categoria === 'filme').length;
+            let qtdJogos = listaDeMidias.filter(m => m.categoria === 'jogo').length;
+            let qtdLivros = listaDeMidias.filter(m => m.categoria === 'livro').length;
+            let qtdSeries = listaDeMidias.filter(m => m.categoria === 'serie').length;
+
+            // Atualizar os dados do gráfico
+            graficoInstance.data.datasets[0].data = [qtdFilmes, qtdJogos, qtdLivros, qtdSeries];
+            graficoInstance.update();
+        }
+
+
+
