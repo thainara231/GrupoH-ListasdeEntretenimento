@@ -123,3 +123,28 @@
             font-size: 0.9rem;
             margin-top: 40px;
         }
+        .login-wrapper {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          min-height: 100vh;
+          padding: 20px;
+          background: radial-gradient(circle at center, #2a2a2a 0%, #121212 100%);
+        }
+
+        .login-box {
+          width: 100%;
+          max-width: 400px;
+          border: 1px solid #333;
+          animation: fade .6s ease;
+        }
+
+        /* Ajuste no input group do bootstrap para ficar escuro */
+        .input-group .btn-outline-secondary {
+           border-color: #444;
+           color: #a0a0a0;
+        }
+        .input-group .btn-outline-secondary:hover {
+           background-color: #333;
+           color: white;
+        }
