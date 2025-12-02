@@ -1,0 +1,55 @@
+
+.login-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+
+.login-box {
+    display: grid;
+    gap: 0;
+}
+
+.login-box > .text-center {
+    display: grid;
+    grid-template-rows: auto auto auto;
+    gap: 12px;
+}
+
+#formLogin {
+    display: grid;
+    gap: 0;
+}
+
+#formLogin > div {
+    display: grid;
+    gap: 8px;
+}
+
+#formLogin label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.input-group {
+    display: flex !important;
+}
+
+.input-group .form-control {
+    flex: 1;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.login-box > .text-center:last-child {
+    display: grid;
+    gap: 12px;
+}
