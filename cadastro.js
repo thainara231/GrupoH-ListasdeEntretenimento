@@ -1,64 +1,79 @@
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("formCadastro");
     
-    // --- Lógica simples de cadastro ---
+    // Elementos da Senha (para o botão de ver senha)
+    const btnVerSenha = document.getElementById("btnVerSenhaCadastro");
+    const inputSenha = document.getElementById("senhaCadastro");
+
+    // 1. Lógica do Botão "Ver Senha" (O Olhinho)
+    if(btnVerSenha && inputSenha) {
+        btnVerSenha.addEventListener("click", () => {
+            // Verifica se é 'password' ou 'text' e troca
+            const tipoAtual = inputSenha.getAttribute("type");
+            const novoTipo = tipoAtual === "password" ? "text" : "password";
+            inputSenha.setAttribute("type", novoTipo);
+            
+            // Troca o ícone (Olho aberto / Olho fechado)
+            const icone = btnVerSenha.querySelector("i");
+            icone.classList.toggle("fa-eye");
+            icone.classList.toggle("fa-eye-slash");
+        });
+    }
+
+    // 2. Lógica de Salvar o Cadastro
     form.addEventListener("submit", (e) => {
         e.preventDefault();
 
-        const nome = document.getElementById("nome").value;
-        const email = document.getElementById("email").value;
-        const senha = document.getElementById("senha").value;
-        const confirma = document.getElementById("confirmaSenha").value;
+        const nome = document.getElementById("nomeCadastro").value;
+        const email = document.getElementById("emailCadastro").value;
+        const senha = document.getElementById("senhaCadastro").value;
+        const confirma = document.getElementById("confirmaSenhaCadastro").value;
 
-        // Validação simples
+        // Validação: Senhas iguais?
         if (senha !== confirma) {
             Swal.fire({
                 icon: 'error',
                 title: 'Erro',
-                text: 'As senhas não batem!',
-                background: '#1e1e1e',
+                text: 'As senhas não coincidem!',
+                background: '#1f1f1f',
                 color: '#fff'
             });
             return;
         }
 
-        // SALVA APENAS UM USUÁRIO (Sobrescreve se já existir)
-        const usuarioSimples = {
+        // Validação: Senha curta?
+        if (senha.length < 6) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Senha Fraca',
+                text: 'A senha deve ter pelo menos 6 caracteres.',
+                background: '#1f1f1f',
+                color: '#fff'
+            });
+            return;
+        }
+
+        // Cria o objeto do usuário
+        const novoUsuario = {
             nome: nome,
             email: email,
             senha: senha
         };
 
-        // Salva no LocalStorage
-        localStorage.setItem('usuarioCadastrado', JSON.stringify(usuarioSimples));
+        // Salva no LocalStorage (Substitui o anterior para simplificar o trabalho)
+        localStorage.setItem('usuarioCadastrado', JSON.stringify(novoUsuario));
 
+        // Sucesso!
         Swal.fire({
             icon: 'success',
-            title: 'Cadastrado!',
-            text: 'Usuário criado com sucesso.',
-            background: '#1e1e1e',
+            title: 'Conta Criada!',
+            text: 'Você será redirecionado para o login.',
+            background: '#1f1f1f',
             color: '#fff',
-            timer: 1500,
+            timer: 2000,
             showConfirmButton: false
         }).then(() => {
             window.location.href = 'login.html';
         });
-    });
-
-    // --- Lógica da Força da Senha (Visual apenas) ---
-    const senhaInput = document.getElementById("senha");
-    const barraForca = document.getElementById("barraForca");
-    
-    senhaInput.addEventListener("input", () => {
-        const senha = senhaInput.value;
-        let largura = 0;
-        let cor = "bg-danger";
-
-        if (senha.length > 3) largura = 30;
-        if (senha.length > 6) { largura = 60; cor = "bg-warning"; }
-        if (senha.length > 8) { largura = 100; cor = "bg-success"; }
-
-        barraForca.style.width = largura + "%";
-        barraForca.className = `progress-bar ${cor}`;
     });
 });
