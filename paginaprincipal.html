@@ -3,55 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MediaVault 2.0</title>
+    <title>MediaVault - Dashboard</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <link rel="stylesheet" href="Universal.css">
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom border-secondary mb-4">
         <div class="container">
-            <a class="navbar-brand" href="#"><i class="fas fa-play-circle me-2"></i>MediaVault</a>
+            <a class="navbar-brand fw-bold" href="#">
+                <i class="fas fa-play-circle text-primary me-2"></i>MediaVault
+            </a>
             
             <div class="d-flex gap-2">
                 <button class="btn btn-outline-light btn-sm" data-bs-toggle="modal" data-bs-target="#autoresModal">
                     <i class="fas fa-users me-1"></i> Autores
                 </button>
-                
+
                 <button onclick="fazerLogout()" class="btn btn-outline-danger btn-sm">
-                    <i class="fas fa-sign-out-alt"></i> Sair
+                    <i class="fas fa-sign-out-alt me-1"></i> Sair
                 </button>
             </div>
         </div>
     </nav>
 
-    <div class="container mt-4">
+    <div class="container">
         <div class="row">
-            <div class="col-md-4">
+            
+            <div class="col-md-4 mb-4">
                 
-                <div class="custom-card text-center mb-3">
+                <div class="custom-card mb-4 text-center">
                     <h5 class="mb-3">Estatísticas</h5>
-                    <div style="height: 200px;">
+                    <div style="height: 200px; position: relative;">
                         <canvas id="meuGrafico"></canvas>
                     </div>
                 </div>
 
                 <div class="custom-card">
-                    <h4 class="mb-3 text-center"><i class="fas fa-plus-circle"></i> Novo Item</h4>
+                    <h5 class="mb-3"><i class="fas fa-plus-circle me-2"></i>Adicionar Item</h5>
                     <form id="formMedia">
                         <div class="mb-3">
-                            <label>Título da Obra</label>
-                            <input type="text" id="titulo" class="form-control" placeholder="Ex: Matrix, Zelda..." required>
+                            <label class="form-label text-muted">Título</label>
+                            <input type="text" id="titulo" class="form-control" placeholder="Ex: Interestelar" required>
                         </div>
                         
                         <div class="mb-3">
-                            <label>Categoria</label>
+                            <label class="form-label text-muted">Categoria</label>
                             <select id="categoria" class="form-select">
                                 <option value="filme">Filme</option>
                                 <option value="jogo">Jogo</option>
@@ -61,57 +63,54 @@
                         </div>
 
                         <div class="mb-3">
-                            <label>Nota (0 a 10)</label>
+                            <label class="form-label text-muted">Nota (0-10)</label>
                             <input type="number" id="nota" class="form-control" min="0" max="10" required>
                         </div>
 
-                        <button type="submit" class="btn btn-primary">Adicionar</button>
+                        <button type="submit" class="btn btn-primary w-100">Salvar</button>
                     </form>
                 </div>
             </div>
 
             <div class="col-md-8">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h3>Minha Lista</h3>
-                    <button onclick="limparTudo()" class="btn btn-sm btn-danger">
-                        <i class="fas fa-trash"></i> Limpar Tudo
-                    </button>
-                </div>
-
-                <div class="d-flex justify-content-center gap-2 mb-4 flex-wrap">
-                    <button onclick="filtrar('todos')" class="btn btn-sm btn-outline-light active" id="btn-todos">Todos</button>
-                    <button onclick="filtrar('filme')" class="btn btn-sm btn-outline-warning" id="btn-filme">Filmes</button>
-                    <button onclick="filtrar('jogo')" class="btn btn-sm btn-outline-danger" id="btn-jogo">Jogos</button>
-                    <button onclick="filtrar('livro')" class="btn btn-sm btn-outline-success" id="btn-livro">Livros</button>
-                    <button onclick="filtrar('serie')" class="btn btn-sm btn-outline-info" id="btn-serie">Séries</button>
-                </div>
-
-                <div id="listaItens">
-                    <div class="text-center text-muted mt-5">
-                        <i class="fas fa-ghost fa-3x"></i>
-                        <p class="mt-2">Nada aqui ainda...</p>
+                <div class="custom-card">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h4>Minha Lista</h4>
+                        <button onclick="limparTudo()" class="btn btn-sm btn-outline-danger">Limpar Lista</button>
                     </div>
+
+                    <div class="d-flex gap-2 mb-4 overflow-auto pb-2">
+                        <button onclick="filtrar('todos')" class="btn btn-sm btn-outline-light active" id="btn-todos">Todos</button>
+                        <button onclick="filtrar('filme')" class="btn btn-sm btn-outline-warning" id="btn-filme">Filmes</button>
+                        <button onclick="filtrar('jogo')" class="btn btn-sm btn-outline-danger" id="btn-jogo">Jogos</button>
+                        <button onclick="filtrar('livro')" class="btn btn-sm btn-outline-success" id="btn-livro">Livros</button>
+                        <button onclick="filtrar('serie')" class="btn btn-sm btn-outline-info" id="btn-serie">Séries</button>
+                    </div>
+
+                    <div id="listaItens"></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="autoresModal" tabindex="-1">
+    <div class="modal fade" id="autoresModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
-            <div class="modal-content bg-dark text-white">
+            <div class="modal-content" style="background-color: var(--bg-card); color: white; border: 1px solid #444;">
                 <div class="modal-header border-secondary">
-                    <h5 class="modal-title">Sobre o Projeto</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    <h5 class="modal-title"><i class="fas fa-users me-2"></i>Sobre o Projeto</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <p>Este sistema foi desenvolvido para a disciplina de Desenvolvimento Web (TP2).</p>
-                    <hr class="bg-secondary">
-                    <h6>Desenvolvedores:</h6>
+                    <hr class="border-secondary">
+                    <h6>Integrantes do Grupo:</h6>
                     <ul>
-                        <li>Pedro Sturzenecker Santana</li>
-                        <li>Tainara</li>
-                        <li>Vitor Oliveira</li>
-                        <li>Vitor Hugo</li> </ul>
+                        <li>Thainara Cristina da Neiva Lopes</li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                    </ul>
+                    
                 </div>
                 <div class="modal-footer border-secondary">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
@@ -120,7 +119,7 @@
         </div>
     </div>
 
-    <footer>
+    <footer class="text-center mt-5 mb-3 text-muted" style="font-size: 0.8rem;">
         &copy; 2025 MediaVault - Trabalho Acadêmico
     </footer>
 
