@@ -1,42 +1,30 @@
-// --- 1. Variáveis Globais ---
 let listaDeMidias = [];
-let filtroAtual = 'todos'; // Para o filtro obrigatório
-let graficoInstance = null; 
+let filtroAtual = 'todos';
+let graficoInstance = null;
+let usuarioAtual = null;
+let chaveStorage = null;
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Verifica login simples
-    if (localStorage.getItem('estaLogado') !== 'sim') {
-        // Se não tiver logado, manda pro login (opcional, se quiser travar o site)
-        // window.location.href = 'login.html';
-    }
-
+    usuarioAtual = localStorage.getItem('usuarioLogado');
+    if (!usuarioAtual) window.location.href = 'login.html';
+    chaveStorage = `mediaVault_${usuarioAtual}`;
     carregarDados();
     atualizarTela();
-    // Carrega a biblioteca do Google Charts
-    google.charts.load('current', {'packages':['corechart']});
-    google.charts.setOnLoadCallback(inicializarGrafico);
+    inicializarGrafico();
+    sincronizarTierList();
 });
 
-// --- 2. Função de Adicionar ---
 document.getElementById('formMedia').addEventListener('submit', function(event) {
-    event.preventDefault(); 
-
+    event.preventDefault();
     const titulo = document.getElementById('titulo').value;
     const categoria = document.getElementById('categoria').value;
     const nota = document.getElementById('nota').value;
-
-    const novaMidia = {
-        id: Date.now(),
-        titulo: titulo,
-        categoria: categoria,
-        nota: nota
-    };
-
-    listaDeMidias.unshift(novaMidia); 
+    const novaMidia = { id: Date.now(), titulo: titulo, categoria: categoria, nota: nota };
+    listaDeMidias.unshift(novaMidia);
     salvarDados();
     atualizarTela();
-    document.getElementById('formMedia').reset(); 
-
+    enviarParaTierList();
+    document.getElementById('formMedia').reset();
     Swal.fire({
         icon: 'success',
         title: 'Adicionado!',
@@ -47,38 +35,28 @@ document.getElementById('formMedia').addEventListener('submit', function(event) 
     });
 });
 
-// --- 3. Função de Filtrar (OBRIGATÓRIO) ---
 window.filtrar = function(categoria) {
     filtroAtual = categoria;
-    
-    // Atualiza visual dos botões
     const botoes = document.querySelectorAll('.btn-outline-light, .btn-outline-warning, .btn-outline-danger, .btn-outline-success, .btn-outline-info');
     botoes.forEach(btn => {
         btn.classList.remove('active');
         btn.style.opacity = "0.6";
     });
-    
-    // Tenta ativar o botão clicado
     const btnAtivo = document.getElementById(`btn-${categoria}`);
     if(btnAtivo) {
         btnAtivo.classList.add('active');
         btnAtivo.style.opacity = "1";
     }
-
     atualizarTela();
 }
 
-// --- 4. Atualizar Tela (Com Filtro) ---
 function atualizarTela() {
     const container = document.getElementById('listaItens');
-    container.innerHTML = ''; 
-
-    // Filtra a lista antes de exibir
+    container.innerHTML = '';
     let listaParaExibir = listaDeMidias;
     if (filtroAtual !== 'todos') {
         listaParaExibir = listaDeMidias.filter(item => item.categoria === filtroAtual);
     }
-
     if (listaParaExibir.length === 0) {
         container.innerHTML = `
             <div class="text-center text-muted mt-5">
@@ -88,16 +66,13 @@ function atualizarTela() {
         atualizarGrafico();
         return;
     }
-
     listaParaExibir.forEach(midia => {
         let icone = 'fa-question';
         let corBadge = 'bg-secondary';
-
         if(midia.categoria === 'filme') { icone = 'fa-film'; corBadge = 'badge-movie'; }
         if(midia.categoria === 'jogo') { icone = 'fa-gamepad'; corBadge = 'badge-game'; }
         if(midia.categoria === 'livro') { icone = 'fa-book'; corBadge = 'badge-book'; }
         if(midia.categoria === 'serie') { icone = 'fa-tv'; corBadge = 'badge-series'; }
-
         container.innerHTML += `
             <div class="media-item">
                 <div class="media-icon"><i class="fas ${icone}"></i></div>
@@ -114,24 +89,18 @@ function atualizarTela() {
             </div>
         `;
     });
-
     atualizarGrafico();
 }
 
-// --- 5. Funções Básicas de Dados (SIMPLIFICADAS) ---
 function salvarDados() {
-    // Salva numa chave fixa simples. Sem frescura de ID de usuário.
-    localStorage.setItem('meuMediaVault', JSON.stringify(listaDeMidias));
+    localStorage.setItem(chaveStorage, JSON.stringify(listaDeMidias));
 }
 
 function carregarDados() {
-    const dados = localStorage.getItem('meuMediaVault');
-    if (dados) {
-        listaDeMidias = JSON.parse(dados);
-    }
+    const dados = localStorage.getItem(chaveStorage);
+    if (dados) listaDeMidias = JSON.parse(dados);
 }
 
-// --- 6. Deletar e Limpar ---
 window.deletarItem = function(id) {
     Swal.fire({
         title: 'Deletar?',
@@ -146,6 +115,7 @@ window.deletarItem = function(id) {
             listaDeMidias = listaDeMidias.filter(item => item.id !== id);
             salvarDados();
             atualizarTela();
+            enviarParaTierList();
         }
     });
 }
@@ -165,61 +135,61 @@ window.limparTudo = function() {
             listaDeMidias = [];
             salvarDados();
             atualizarTela();
+            enviarParaTierList();
         }
     });
 }
 
-// --- 7. Logout Simples ---
 window.fazerLogout = function() {
     localStorage.removeItem('estaLogado');
+    localStorage.removeItem('usuarioLogado');
     window.location.href = 'login.html';
 }
 
-// --- 8. Gráfico com Google Charts ---
 function inicializarGrafico() {
-    graficoInstance = true; // Marca que está inicializado
-    atualizarGrafico();
+    const ctx = document.getElementById('meuGrafico');
+    if(!ctx) return;
+    graficoInstance = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Filmes', 'Jogos', 'Livros', 'Séries'],
+            datasets: [{
+                data: [0, 0, 0, 0],
+                backgroundColor: ['#ffa726', '#ef5350', '#66bb6a', '#42a5f5'],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'bottom', labels: { color: '#e0e0e0' } }
+            }
+        }
+    });
 }
 
 function atualizarGrafico() {
     if (!graficoInstance) return;
-    
-    const ctx = document.getElementById('meuGrafico');
-    if(!ctx) return;
-
     let qtdFilmes = listaDeMidias.filter(m => m.categoria === 'filme').length;
     let qtdJogos = listaDeMidias.filter(m => m.categoria === 'jogo').length;
     let qtdLivros = listaDeMidias.filter(m => m.categoria === 'livro').length;
     let qtdSeries = listaDeMidias.filter(m => m.categoria === 'serie').length;
-    
-    // Prepara os dados para o Google Charts
-    const data = google.visualization.arrayToDataTable([
-        ['Categoria', 'Quantidade'],
-        ['Filmes', qtdFilmes],
-        ['Jogos', qtdJogos],
-        ['Livros', qtdLivros],
-        ['Séries', qtdSeries]
-    ]);
+    graficoInstance.data.datasets[0].data = [qtdFilmes, qtdJogos, qtdLivros, qtdSeries];
+    graficoInstance.update();
+}
 
-    // Opções do gráfico
-    const options = {
-        pieHole: 0.4, // Cria um gráfico de rosca (doughnut)
-        backgroundColor: 'transparent',
-        colors: ['#ffa726', '#ef5350', '#66bb6a', '#42a5f5'],
-        legend: {
-            position: 'bottom',
-            textStyle: { color: '#e0e0e0' }
-        },
-        pieSliceTextStyle: {
-            color: '#fff'
-        },
-        chartArea: {
-            width: '90%',
-            height: '80%'
+function enviarParaTierList() {
+    localStorage.setItem(`tierlist_${usuarioAtual}`, JSON.stringify(listaDeMidias));
+}
+
+function sincronizarTierList() {
+    window.addEventListener('storage', () => {
+        const dados = localStorage.getItem(`tierlist_${usuarioAtual}`);
+        if (dados) {
+            listaDeMidias = JSON.parse(dados);
+            salvarDados();
+            atualizarTela();
         }
-    };
-
-    // Desenha o gráfico
-    const chart = new google.visualization.PieChart(ctx);
-    chart.draw(data, options);
+    });
 }
