@@ -16,10 +16,10 @@
 }
 
 body {
-background: var(--bg);
-color: var(--text-dark);
-font-family: "Inter", sans-serif;
-line-height: 1.5;
+    background: var(--bg);
+    color: var(--text-dark);
+    font-family: "Inter", sans-serif;
+    line-height: 1.5;
 }
 
 body > * {
@@ -35,6 +35,7 @@ header {
     align-items: center;
     margin-bottom: 25px;
     padding: 0 20px;
+    color: white;
 }
 
 #logoutBtn {
@@ -65,24 +66,28 @@ header {
     padding: 20px;
     border-radius: var(--radius);
     margin-bottom: 20px;
-    border-radius: 20% solid;
-    border-color: #4F46E5;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
     transition: var(--transition);
     width: min(90%, 800px);
     margin-left: auto;
     margin-right: auto;
+    border: 1px solid #4F46E5;
 }
 
 input, select {
     width: 100%;
     padding: 12px;
     border-radius: var(--radius);
-    border: 1px solid #D1D5DB;
+    border: 1px solid #555;
     font-size: 16px;
     transition: var(--transition);
-    background: white;
+    background: #1c1c1c;
+    color: white;
     margin-bottom: 10px;
+}
+
+input::placeholder, select option {
+    color: #ccc;
 }
 
 input:focus, select:focus {
@@ -116,21 +121,22 @@ input:focus, select:focus {
 }
 
 .item-card {
-    background: #F9FAFB;
+    background: #1f1f1f;
     padding: 15px;
     border-radius: var(--radius);
     margin-bottom: 10px;
-    border: 1px solid #E5E7EB;
+    border: 1px solid #4F46E5;
+    color: white;
 }
 
 .item-concluido {
     opacity: 0.6;
     text-decoration: line-through;
-    color: var(--text-light);
+    color: #bbb;
 }
 
 h2, h3 {
-    color: var(--text-dark);
+    color: white;
     font-weight: 700;
 }
 
