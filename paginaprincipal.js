@@ -12,7 +12,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     carregarDados();
     atualizarTela();
-    inicializarGrafico();
+    // Carrega a biblioteca do Google Charts
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(inicializarGrafico);
 });
 
 // --- 2. Função de Adicionar ---
@@ -173,38 +175,51 @@ window.fazerLogout = function() {
     window.location.href = 'login.html';
 }
 
-// --- 8. Gráfico ---
+// --- 8. Gráfico com Google Charts ---
 function inicializarGrafico() {
-    const ctx = document.getElementById('meuGrafico');
-    if(!ctx) return;
-
-    graficoInstance = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: ['Filmes', 'Jogos', 'Livros', 'Séries'],
-            datasets: [{
-                data: [0, 0, 0, 0],
-                backgroundColor: ['#ffa726', '#ef5350', '#66bb6a', '#42a5f5'],
-                borderWidth: 0
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: { position: 'bottom', labels: { color: '#e0e0e0' } }
-            }
-        }
-    });
+    graficoInstance = true; // Marca que está inicializado
+    atualizarGrafico();
 }
 
 function atualizarGrafico() {
     if (!graficoInstance) return;
+    
+    const ctx = document.getElementById('meuGrafico');
+    if(!ctx) return;
+
     let qtdFilmes = listaDeMidias.filter(m => m.categoria === 'filme').length;
     let qtdJogos = listaDeMidias.filter(m => m.categoria === 'jogo').length;
     let qtdLivros = listaDeMidias.filter(m => m.categoria === 'livro').length;
     let qtdSeries = listaDeMidias.filter(m => m.categoria === 'serie').length;
     
-    graficoInstance.data.datasets[0].data = [qtdFilmes, qtdJogos, qtdLivros, qtdSeries];
-    graficoInstance.update();
+    // Prepara os dados para o Google Charts
+    const data = google.visualization.arrayToDataTable([
+        ['Categoria', 'Quantidade'],
+        ['Filmes', qtdFilmes],
+        ['Jogos', qtdJogos],
+        ['Livros', qtdLivros],
+        ['Séries', qtdSeries]
+    ]);
+
+    // Opções do gráfico
+    const options = {
+        pieHole: 0.4, // Cria um gráfico de rosca (doughnut)
+        backgroundColor: 'transparent',
+        colors: ['#ffa726', '#ef5350', '#66bb6a', '#42a5f5'],
+        legend: {
+            position: 'bottom',
+            textStyle: { color: '#e0e0e0' }
+        },
+        pieSliceTextStyle: {
+            color: '#fff'
+        },
+        chartArea: {
+            width: '90%',
+            height: '80%'
+        }
+    };
+
+    // Desenha o gráfico
+    const chart = new google.visualization.PieChart(ctx);
+    chart.draw(data, options);
 }
