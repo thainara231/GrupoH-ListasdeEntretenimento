@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnVerSenha = document.getElementById("btnVerSenhaCadastro");
     const inputSenha = document.getElementById("senhaCadastro");
 
-    // 1. Lógica do Botão "Ver Senha" (O Olhinho)
+    //Lógica do Botão "Ver Senha" (O Olhinho)
     if(btnVerSenha && inputSenha) {
         btnVerSenha.addEventListener("click", () => {
             // Verifica se é 'password' ou 'text' e troca
@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // 2. Lógica de Salvar o Cadastro
+    //Lógica de Salvar o Cadastro
     form.addEventListener("submit", (e) => {
         e.preventDefault();
 
@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const senha = document.getElementById("senhaCadastro").value;
         const confirma = document.getElementById("confirmaSenhaCadastro").value;
 
-        // Validação: Senhas iguais?
+        
         if (senha !== confirma) {
             Swal.fire({
                 icon: 'error',
@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        // Validação: Senha curta?
+        
         if (senha.length < 6) {
             Swal.fire({
                 icon: 'warning',
